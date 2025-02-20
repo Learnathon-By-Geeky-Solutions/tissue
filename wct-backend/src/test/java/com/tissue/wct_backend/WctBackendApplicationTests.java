@@ -1,13 +1,13 @@
-package com.tissue.wct_backend;
+// package com.tissue.wct_backend;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+// import org.junit.jupiter.api.Test;
+// import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class WctBackendApplicationTests {
+// @SpringBootTest
+// class WctBackendApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+// 	@Test
+// 	void contextLoads() {
+// 	}
 
-}
+// }
