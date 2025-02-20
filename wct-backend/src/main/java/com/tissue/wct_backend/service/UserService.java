@@ -2,16 +2,19 @@ package com.example.project.service;
 
 import com.example.project.model.User;
 import com.example.project.repository.UserRepository;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final PasswordEncoder passwordEncoder;  // Injected via constructor
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User registerUser(String email, String password) {
@@ -21,8 +24,15 @@ public class UserService {
     }
 
     public User loginUser(String email, String password) {
-        return userRepository.findByEmail(email)
-                .filter(user -> passwordEncoder.matches(password, user.getPassword()))
-                .orElse(null);
+        Optional<User> userOptional = userRepository.findByEmail(email);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            if (passwordEncoder.matches(password, user.getPassword())) {
+                return user;
+            }
+        }
+
+        return null; // Return null if authentication fails
     }
 }
